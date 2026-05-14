@@ -1061,7 +1061,7 @@ def generate(year):
     data = build_data(year)
     html = HTML_TEMPLATE.replace("{DATA_PLACEHOLDER}", json.dumps(data, ensure_ascii=False))
     html = html.replace("{YEAR_PLACEHOLDER}", str(year))
-    fname = r"C:\Users\ixg\Desktop\calendar_2026.html"
+    fname = os.path.join(os.path.dirname(os.path.abspath(__file__)), f"calendar_{year}.html")
     with open(fname, "w", encoding="utf-8") as f:
         f.write(html)
     print(f"\n✅ Generado: {fname}")
