@@ -1,0 +1,6 @@
+exchange_calendars
+fredapi
+requests
+beautifulsoup4
+lxml
+yfinance
