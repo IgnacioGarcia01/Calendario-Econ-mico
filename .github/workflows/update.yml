@@ -1,0 +1,42 @@
+name: Actualizar Calendario
+ 
+on:
+  schedule:
+    - cron: '0 2 * * *'  # Todos los días a las 23hs ARG (02:00 UTC)
+  workflow_dispatch:       # También permite correrlo manualmente
+ 
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+ 
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+ 
+    steps:
+      - name: Clonar repositorio
+        uses: actions/checkout@v4
+ 
+      - name: Instalar Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+ 
+      - name: Instalar dependencias
+        run: pip install -r requirements.txt
+ 
+      - name: Generar calendario
+        env:
+          FRED_API_KEY: ${{ secrets.FRED_API_KEY }}
+        run: |
+          python calendar_html.py 2026
+          mv calendar_2026.html index.html
+ 
+      - name: Publicar en GitHub Pages
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: '.'
+ 
+      - name: Deploy
+        uses: actions/deploy-pages@v4
